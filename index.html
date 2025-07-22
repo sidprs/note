@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Metadachi</title>
+    <style>
+        :root {
+            /* base scale so everything is a little more compact */
+            --font-base: 14px;
+        }
+
+        /* ─── Reset & globals ─────────────────────────────── */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: var(--font-base);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+                sans-serif;
+            background-color: #0a0a0a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        .container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── Header ─────────────────────────────────────── */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1.5rem; /* tighter */
+            border-bottom: 1px solid #2a2a2a;
+            background-color: #111111;
+            font-size: 0.9rem;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.4rem 0.8rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.15s;
+            color: #a0a0a0;
+            user-select: none;
+        }
+
+        .nav-item:hover {
+            background-color: #2a2a2a;
+            color: #ffffff;
+        }
+
+        .nav-item.active {
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        .nav-icon {
+            width: 16px;
+            height: 16px;
+            opacity: 0.8;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .icon-btn {
+            width: 34px;
+            height: 34px;
+            border: none;
+            background: #2a2a2a;
+            color: #a0a0a0;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s;
+            font-size: 0.9rem;
+        }
+
+        .icon-btn:hover {
+            background-color: #3a3a3a;
+            color: #ffffff;
+        }
+
+        /* ─── Main scaffold ──────────────────────────────── */
+        .main-content {
+            flex: 1;
+            display: flex;
+        }
+
+        .content-area {
+            flex: 1;
+            padding: 1.5rem 2rem;
+            overflow-y: auto;
+        }
+
+        .sidebar {
+            width: 280px;
+            background-color: #111111;
+            border-right: 1px solid #2a2a2a;
+            padding: 1.25rem;
+            overflow-y: auto;
+            font-size: 0.85rem;
+        }
+
+        /* ─── Dashboard layout ───────────────────────────── */
+        .dashboard-layout {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+
+        .dashboard-main {
+            flex: 1;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .page-subtitle {
+            color: #a0a0a0;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .stat-card {
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 1.25rem;
+            transition: all 0.15s;
+        }
+        .stat-card:hover {
+            border-color: #3a3a3a;
+            background-color: #1e1e1e;
+        }
+        .stat-title {
+            font-size: 0.75rem;
+            color: #a0a0a0;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        .stat-value {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+        .stat-subtitle {
+            font-size: 0.7rem;
+            color: #666666;
+            margin-top: 0.25rem;
+        }
+
+        /* recent sources */
+        .sources-section,
+        .tags-section {
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.9rem;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            border-radius: 6px;
+            margin-bottom: 0.4rem;
+            background-color: #222222;
+            border: 1px solid #2a2a2a;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-size: 0.8rem;
+        }
+        .source-item:hover {
+            background-color: #2a2a2a;
+            border-color: #3a3a3a;
+        }
+        .source-icon {
+            width: 18px;
+            height: 18px;
+            margin-right: 0.7rem;
+            opacity: 0.6;
+        }
+        .source-status {
+            font-size: 0.7rem;
+            color: #4ade80;
+            background-color: #1f2937;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+        }
+
+        /* tags */
+        .tags-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+        }
+        .tag {
+            background-color: #333333;
+            color: #a0a0a0;
+            padding: 0.4rem 0.9rem;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid #3a3a3a;
+        }
+        .tag:hover,
+        .tag.active {
+            background-color: #3a3a3a;
+            color: #ffffff;
+        }
+
+        /* ─── Quick actions ─────────────────────────────── */
+        .quick-actions {
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 1.25rem;
+            width: 260px;
+            flex-shrink: 0;
+        }
+        .quick-actions h3 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .qa-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            width: 100%;
+            background-color: #111111;
+            color: #a0a0a0;
+            border: 1px solid #2a2a2a;
+            padding: 0.55rem 0.9rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .qa-btn:hover {
+            background-color: #2a2a2a;
+            color: #ffffff;
+        }
+        .qa-icon {
+            width: 14px;
+            height: 14px;
+            opacity: 0.7;
+        }
+
+        /* ─── Library grid ─────────────────────────────── */
+        .toolbar {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .search-input {
+            flex: 1 1 240px;
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 6px;
+            padding: 0.55rem 0.9rem;
+            color: #ffffff;
+            font-size: 0.8rem;
+        }
+        .toolbar-btn {
+            background-color: #2a2a2a;
+            color: #a0a0a0;
+            border: 1px solid #3a3a3a;
+            border-radius: 6px;
+            padding: 0.45rem 0.9rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .toolbar-btn:hover,
+        .toolbar-btn.active {
+            background-color: #3a3a3a;
+            color: #ffffff;
+        }
+
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.25rem;
+        }
+        .library-card {
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 1.25rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .library-card:hover {
+            border-color: #3a3a3a;
+            background-color: #1e1e1e;
+        }
+        .library-date {
+            font-size: 0.7rem;
+            color: #666666;
+            margin-bottom: 0.4rem;
+        }
+        .library-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.7rem;
+            color: #ffffff;
+        }
+        .library-summary {
+            font-size: 0.78rem;
+            color: #a0a0a0;
+            line-height: 1.4;
+            margin-bottom: 0.9rem;
+        }
+        .library-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+        }
+        .library-tag {
+            background-color: #2a2a2a;
+            color: #a0a0a0;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
+        }
+
+        /* chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .welcome-message {
+            text-align: center;
+            margin-top: 2.5rem;
+            font-size: 0.9rem;
+        }
+        .welcome-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .welcome-subtitle {
+            color: #a0a0a0;
+            font-size: 0.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .chat-input-container {
+            margin-top: auto;
+            padding: 0.9rem;
+            border-top: 1px solid #2a2a2a;
+        }
+        .chat-input {
+            width: 100%;
+            background-color: #1a1a1a;
+            border: 1px solid #2a2a2a;
+            border-radius: 10px;
+            padding: 0.9rem 1rem;
+            font-size: 0.8rem;
+            color: #ffffff;
+            resize: none;
+            outline: none;
+        }
+        .chat-input::placeholder {
+            color: #666666;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ─── Header ─────────────────────────────── -->
+        <header class="header">
+            <div class="logo">Metadachi</div>
+            <nav class="nav">
+                <div class="nav-item active" data-page="dashboard">
+                    <img src="icons/home.png" class="nav-icon" alt="Home" />
+                    <span>Dashboard</span>
+                </div>
+                <div class="nav-item" data-page="summarize">
+                    <img src="icons/chat.png" class="nav-icon" alt="Summarize" />
+                    <span>Summarize</span>
+                </div>
+                <div class="nav-item" data-page="library">
+                    <img src="icons/library.png" class="nav-icon" alt="Library" />
+                    <span>Library</span>
+                </div>
+                <div class="nav-item" data-page="notebooks">
+                    <img src="icons/notebook.png" class="nav-icon" alt="Notebooks" />
+                    <span>Notebooks</span>
+                </div>
+            </nav>
+            <div class="header-actions">
+                <button class="icon-btn">🌙</button>
+                <button class="icon-btn">👤</button>
+            </div>
+        </header>
+
+        <!-- ─── Main content ───────────────────────── -->
+        <main class="main-content">
+            <!-- ─── Dashboard Page ─────────────────── -->
+            <div id="dashboard-page" class="content-area">
+                <div class="page-title">
+                    Dashboard <span class="page-subtitle">🚧 Work in Progress</span>
+                </div>
+
+                <div class="dashboard-layout">
+                    <!-- left column -->
+                    <div class="dashboard-main">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-title">Total Sources</div>
+                                <div class="stat-value">14</div>
+                                <div class="stat-subtitle">Across all types</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">Text Sources</div>
+                                <div class="stat-value">14</div>
+                                <div class="stat-subtitle">Direct text inputs</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">URL Sources</div>
+                                <div class="stat-value">0</div>
+                                <div class="stat-subtitle">Web pages</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-title">File Sources</div>
+                                <div class="stat-value">0</div>
+                                <div class="stat-subtitle">Uploaded files</div>
+                            </div>
+                        </div>
+
+                        <div class="sources-section">
+                            <h3 class="section-title">Recent Sources</h3>
+                            <!-- repeat source-item -->
+                            <div class="source-item">
+                                <img src="icons/doc.png" class="source-icon" />
+                                <div style="flex: 1;">
+                                    <div class="source-title">
+                                        A detailed analysis of why Python is superior to J...
+                                    </div>
+                                    <div class="source-date">Jun 7, 12:43 PM</div>
+                                </div>
+                                <div class="source-status">Summarized</div>
+                            </div>
+                            <!-- ...other items -->
+                        </div>
+
+                        <div class="tags-section">
+                            <h3 class="section-title">Popular Tags</h3>
+                            <div class="tags-grid">
+                                <div class="tag">FirstCode</div>
+                                <div class="tag">HelloWorld</div>
+                                <div class="tag">coding-is-fun</div>
+                                <div class="tag">LanguageWars</div>
+                                <div class="tag">PythonCultist</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- right column: quick actions -->
+                    <aside class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <button class="qa-btn">
+                            <img src="icons/sparkle.png" class="qa-icon" alt="Summarize" />
+                            <span>Summarize Text</span>
+                        </button>
+                        <button class="qa-btn">
+                            <img src="icons/link.png" class="qa-icon" alt="Add URL" />
+                            <span>Add URL</span>
+                        </button>
+                        <button class="qa-btn">
+                            <img src="icons/upload.png" class="qa-icon" alt="Upload" />
+                            <span>Upload File</span>
+                        </button>
+                    </aside>
+                </div>
+            </div>
+
+            <!-- ─── Library Page ───────────────────── -->
+            <div id="library-page" class="content-area hidden">
+                <div class="page-title">Your Library</div>
+                <div class="page-subtitle">
+                    View and manage your sources and summaries
+                </div>
+
+                <div class="toolbar">
+                    <input
+                        type="text"
+                        class="search-input"
+                        placeholder="Search sources..."
+                    />
+                    <button class="toolbar-btn active">All Types</button>
+                    <button class="toolbar-btn">Tags</button>
+                    <button class="toolbar-btn">Newest First</button>
+                    <button class="toolbar-btn">📋</button>
+                    <button class="toolbar-btn">📊</button>
+                    <button class="toolbar-btn add-source-btn">+ Add Source</button>
+                </div>
+
+                <div class="library-grid">
+                    <!-- card sample -->
+                    <div class="library-card">
+                        <div class="library-date">Jun 7, 2025 at 12:43 PM</div>
+                        <div class="library-title">Hello World</div>
+                        <div class="library-summary">
+                            This innocent 'Hello World' program was my gateway drug into a life
+                            of caffeine addiction, impostor syndrome, and explaining to my...
+                        </div>
+                        <div class="library-tags">
+                            <div class="library-tag">FirstCode</div>
+                            <div class="library-tag">HelloWorld</div>
+                            <div class="library-tag">coding-is-fun</div>
+                        </div>
+                    </div>
+                    <!-- other cards ... -->
+                </div>
+            </div>
+
+            <!-- ─── Notebooks Page ─────────────────── -->
+            <div id="notebooks-page" class="content-area hidden">
+                <div class="page-title">Notebooks</div>
+                <div class="page-subtitle">
+                    Organize your sources into collections
+                </div>
+
+                <div
+                    style="
+                        text-align: center;
+                        margin-top: 3rem;
+                        color: #666666;
+                    "
+                >
+                    <div style="font-size: 2.4rem; margin-bottom: 0.8rem;">📓</div>
+                    <div style="font-size: 1rem; margin-bottom: 0.4rem;">
+                        No notebooks yet
+                    </div>
+                    <div style="font-size: 0.85rem;">
+                        Create your first notebook to organize your sources
+                    </div>
+                    <button
+                        class="add-source-btn"
+                        style="max-width: 180px; margin: 1.5rem auto; font-size: 0.8rem;"
+                    >
+                        + Create Notebook
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─── Summarize / Chat Page ───────────── -->
+            <div id="summarize-page" class="main-content hidden">
+                <div class="sidebar">
+                    <h3 style="margin-bottom: 0.9rem; font-size: 0.9rem;">Sources</h3>
+                    <button class="add-source-btn" style="margin-bottom: 1rem;">
+                        + Add Source
+                    </button>
+                    <div class="source-list">
+                        <div class="source-list-item">
+                            <div class="source-list-icon">📄</div>
+                            <div class="source-list-content">
+                                <div class="source-list-title">Hello World</div>
+                                <div class="source-list-date">text • 6/7/2025</div>
+                            </div>
+                        </div>
+                        <!-- more items -->
+                    </div>
+                </div>
+                <div class="content-area">
+                    <div class="chat-container">
+                        <div class="welcome-message">
+                            <div
+                                style="font-size: 2rem; margin-bottom: 0.8rem; opacity: 0.25;"
+                            >
+                                💬
+                            </div>
+                            <div class="welcome-title">Welcome to AI Chat</div>
+                            <div class="welcome-subtitle">
+                                I'm here to help you explore and understand your sources. What
+                                would you like to know?
+                            </div>
+                        </div>
+                        <div class="chat-input-container">
+                            <textarea
+                                class="chat-input"
+                                placeholder="Ask about your sources... (⌘/Ctrl + Enter to send)"
+                                rows="3"
+                            ></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ─── JavaScript ───────────────────────────── -->
+    <script>
+        class MetadachiApp {
+            constructor() {
+                this.currentPage = "dashboard";
+                this.init();
+            }
+
+            init() {
+                this.bindEvents();
+                this.showPage("dashboard");
+            }
+
+            bindEvents() {
+                // navigation
+                document.querySelectorAll(".nav-item").forEach((item) => {
+                    item.addEventListener("click", () => {
+                        const page = item.dataset.page;
+                        this.showPage(page);
+                    });
+                });
+
+                // search
+                const searchInput = document.querySelector(".search-input");
+                if (searchInput) {
+                    searchInput.addEventListener("input", (e) => {
+                        this.filterLibrary(e.target.value);
+                    });
+                }
+
+                // toolbar buttons
+                document.querySelectorAll(".toolbar-btn").forEach((btn) => {
+                    btn.addEventListener("click", (e) => {
+                        if (!btn.classList.contains("add-source-btn")) {
+                            document
+                                .querySelectorAll(".toolbar-btn")
+                                .forEach((b) => b.classList.remove("active"));
+                            btn.classList.add("active");
+                        }
+                    });
+                });
+
+                // add‑source
+                document.querySelectorAll(".add-source-btn").forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        this.showAddSourceModal();
+                    });
+                });
+
+                // interactive items
+                document
+                    .querySelectorAll(
+                        ".source-item, .library-card, .source-list-item"
+                    )
+                    .forEach((item) => {
+                        item.addEventListener("click", () => {
+                            this.showSourceDetails(item);
+                        });
+                    });
+
+                // tags
+                document.querySelectorAll(".tag").forEach((tag) => {
+                    tag.addEventListener("click", (e) => {
+                        this.filterByTag(e.target.textContent);
+                    });
+                });
+
+                // chat input
+                const chatInput = document.querySelector(".chat-input");
+                if (chatInput) {
+                    chatInput.addEventListener("keydown", (e) => {
+                        if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+                            this.sendMessage(e.target.value);
+                            e.target.value = "";
+                        }
+                    });
+                }
+            }
+
+            showPage(pageName) {
+                // nav state
+                document.querySelectorAll(".nav-item").forEach((i) =>
+                    i.classList.remove("active")
+                );
+                document
+                    .querySelector(`[data-page="${pageName}"]`)
+                    .classList.add("active");
+
+                // hide all
+                document.querySelectorAll("[id$='-page']").forEach((p) =>
+                    p.classList.add("hidden")
+                );
+
+                // reveal target
+                const target = document.getElementById(`${pageName}-page`);
+                if (target) {
+                    target.classList.remove("hidden");
+                    this.currentPage = pageName;
+                }
+            }
+
+            filterLibrary(term) {
+                document.querySelectorAll(".library-card").forEach((card) => {
+                    const title = card
+                        .querySelector(".library-title")
+                        .textContent.toLowerCase();
+                    const summary = card
+                        .querySelector(".library-summary")
+                        .textContent.toLowerCase();
+                    const match =
+                        title.includes(term.toLowerCase()) ||
+                        summary.includes(term.toLowerCase());
+                    card.style.display = match ? "block" : "none";
+                });
+            }
+
+            filterByTag(tagText) {
+                // highlight clicked tag
+                document.querySelectorAll(".tag").forEach((t) =>
+                    t.classList.remove("active")
+                );
+                const clicked = [...document.querySelectorAll(".tag")].find(
+                    (t) => t.textContent.trim() === tagText.trim()
+                );
+                if (clicked) clicked.classList.add("active");
+
+                // library cards
+                document.querySelectorAll(".library-card").forEach((card) => {
+                    const tags = card.querySelectorAll(".library-tag");
+                    const hasTag = [...tags].some(
+                        (t) => t.textContent.trim() === tagText.trim()
+                    );
+                    card.style.display = hasTag ? "block" : "none";
+                });
+
+                // sidebar source list
+                document
+                    .querySelectorAll(".source-list-item")
+                    .forEach((item) => {
+                        const title = item
+                            .querySelector(".source-list-title")
+                            .textContent.toLowerCase();
+                        const hasTag = title.includes(tagText.toLowerCase());
+                        item.style.display = hasTag ? "flex" : "none";
+                    });
+            }
+
+            // placeholder stubs for future logic
+            showAddSourceModal() {
+                alert("Add Source modal coming soon ✨");
+            }
+            showSourceDetails(item) {
+                console.log("Would open details for", item);
+            }
+            sendMessage(msg) {
+                if (msg.trim() === "") return;
+                console.log("SEND MESSAGE", msg);
+            }
+        }
+
+        // boot
+        new MetadachiApp();
+    </script>
+</body>
+</html>
+

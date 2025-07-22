@@ -264,14 +264,6 @@ body {
     color: #666;
 }
 
-
-.editor-content {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
-  overflow: hidden;
-}
-
 .editor {
     flex: 1;
     padding: 24px;
@@ -283,7 +275,7 @@ body {
     resize: none;
     background: transparent;
     color: #e8e8e8;
-    overflowy: auto;
+    overflow: auto;
 }
 
 .editor::placeholder {
@@ -452,3 +444,109 @@ body {
     border-radius: inherit;
     z-index: -1;
 }
+/* ------------------------------------------------------------------ */
+/*  Metadachi-style top bar + nav                                     */
+/* ------------------------------------------------------------------ */
+.header {
+  flex-direction: column;           /* stack brand + nav + toolbar */
+  align-items: flex-start;          /* brand left-aligned */
+  gap: 6px;
+  padding: 12px 24px 10px;
+  background: #0e0e0e;
+}
+
+.brand {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .2px;
+  color: #f1f1f1;
+}
+
+.main-nav {
+  display: flex;
+  gap: 24px;
+  margin-top: 2px;
+}
+
+.nav-link {
+  font-size: 13px;
+  color: #888;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 4px;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: #eaeaea;
+}
+
+.nav-link.active::after,
+.nav-link:hover::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: #35c2ff;             /* subtle cyan underline */
+  border-radius: 1px;
+}
+
+/* push toolbar to far right */
+.toolbar { margin-left: auto; }
+
+/* ------------------------------------------------------------------ */
+/*  Sidebar tweaks                                                    */
+/* ------------------------------------------------------------------ */
+.sidebar {
+  width: 300px;
+  font-size: 13px;
+}
+.sidebar-header {
+  background: rgba(255,255,255,.015);
+}
+.new-note-btn { font-size: 11px; }
+
+/* ------------------------------------------------------------------ */
+/*  “Metadachi” dashboard-ish card look                               */
+/* ------------------------------------------------------------------ */
+.card-note,
+.note-item,
+.editor-container,
+.sidebar {
+  background: #111;                /* deeper black */
+}
+
+.card-note {
+  border: 1px solid #262626;
+  transition: transform .25s ease, border-color .25s ease;
+}
+.card-note:hover {
+  transform: translateY(-3px);
+  border-color: #35c2ff80;
+}
+
+.note-item.active {
+  background: rgba(53,194,255,0.12);
+  border-left-color: #35c2ff;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Buttons (Metadachi hue)                                           */
+/* ------------------------------------------------------------------ */
+.btn.active {
+  background: #35c2ff40;
+  border-color: #35c2ff80;
+}
+.btn:hover {
+  background: #35c2ff30;
+  border-color: #35c2ff80;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Vim overlay already dark enough; just reduce opacity a hair       */
+/* ------------------------------------------------------------------ */
+.vim-guide { background: rgba(0,0,0,.75); }
+
+
