@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Metadachi</title>
+    <title>krnl</title>
     <style>
         :root {
             /* base scale so everything is a little more compact */
             --font-base: 14px;
+            --icon-size: 16px;
         }
 
         /* ─── Reset & globals ─────────────────────────────── */
@@ -80,9 +81,10 @@
         }
 
         .nav-icon {
-            width: 16px;
-            height: 16px;
+            width: var(--icon-size);
+            height: var(--icon-size);
             opacity: 0.8;
+            flex-shrink: 0;
         }
 
         .header-actions {
@@ -229,6 +231,7 @@
             height: 18px;
             margin-right: 0.7rem;
             opacity: 0.6;
+            flex-shrink: 0;
         }
         .source-status {
             font-size: 0.7rem;
@@ -266,7 +269,7 @@
             border: 1px solid #2a2a2a;
             border-radius: 10px;
             padding: 1.25rem;
-            width: 260px;
+            width: 240px;
             flex-shrink: 0;
         }
         .quick-actions h3 {
@@ -277,25 +280,27 @@
         .qa-btn {
             display: flex;
             align-items: center;
-            gap: 0.65rem;
+            gap: 0.5rem;
             width: 100%;
             background-color: #111111;
             color: #a0a0a0;
             border: 1px solid #2a2a2a;
-            padding: 0.55rem 0.9rem;
+            padding: 0.4rem 0.8rem; /* smaller */
             border-radius: 6px;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
             cursor: pointer;
             transition: all 0.15s;
+            margin-bottom: 0.5rem;
         }
         .qa-btn:hover {
             background-color: #2a2a2a;
             color: #ffffff;
         }
         .qa-icon {
-            width: 14px;
-            height: 14px;
-            opacity: 0.7;
+            width: var(--icon-size);
+            height: var(--icon-size);
+            flex-shrink: 0;
+            object-fit: contain;
         }
 
         /* ─── Library grid ─────────────────────────────── */
@@ -429,22 +434,26 @@
     <div class="container">
         <!-- ─── Header ─────────────────────────────── -->
         <header class="header">
-            <div class="logo">Metadachi</div>
+            <div class="logo">krnl</div>
             <nav class="nav">
                 <div class="nav-item active" data-page="dashboard">
-                    <img src="icons/home.png" class="nav-icon" alt="Home" />
+                    <!-- home icon -->
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7"/><path d="M9 22V12H15V22"/></svg>
                     <span>Dashboard</span>
                 </div>
                 <div class="nav-item" data-page="summarize">
-                    <img src="icons/chat.png" class="nav-icon" alt="Summarize" />
+                    <!-- chat icon -->
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                     <span>Summarize</span>
                 </div>
                 <div class="nav-item" data-page="library">
-                    <img src="icons/library.png" class="nav-icon" alt="Library" />
+                    <!-- library icon -->
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="16" height="18" rx="2" ry="2"/><path d="M16 3v18"/></svg>
                     <span>Library</span>
                 </div>
                 <div class="nav-item" data-page="notebooks">
-                    <img src="icons/notebook.png" class="nav-icon" alt="Notebooks" />
+                    <!-- notebook icon -->
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h20v18H2z"/><path d="M12 3v18"/></svg>
                     <span>Notebooks</span>
                 </div>
             </nav>
@@ -465,71 +474,38 @@
                 <div class="dashboard-layout">
                     <!-- left column -->
                     <div class="dashboard-main">
-                        <div class="stats-grid">
-                            <div class="stat-card">
-                                <div class="stat-title">Total Sources</div>
-                                <div class="stat-value">14</div>
-                                <div class="stat-subtitle">Across all types</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-title">Text Sources</div>
-                                <div class="stat-value">14</div>
-                                <div class="stat-subtitle">Direct text inputs</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-title">URL Sources</div>
-                                <div class="stat-value">0</div>
-                                <div class="stat-subtitle">Web pages</div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-title">File Sources</div>
-                                <div class="stat-value">0</div>
-                                <div class="stat-subtitle">Uploaded files</div>
-                            </div>
+                        <div class="stats-grid" id="stats-grid">
+                            <!-- stats injected via JS -->
                         </div>
 
                         <div class="sources-section">
                             <h3 class="section-title">Recent Sources</h3>
-                            <!-- repeat source-item -->
-                            <div class="source-item">
-                                <img src="icons/doc.png" class="source-icon" />
-                                <div style="flex: 1;">
-                                    <div class="source-title">
-                                        A detailed analysis of why Python is superior to J...
-                                    </div>
-                                    <div class="source-date">Jun 7, 12:43 PM</div>
-                                </div>
-                                <div class="source-status">Summarized</div>
-                            </div>
-                            <!-- ...other items -->
+                            <div id="recent-sources"></div>
                         </div>
 
                         <div class="tags-section">
                             <h3 class="section-title">Popular Tags</h3>
-                            <div class="tags-grid">
-                                <div class="tag">FirstCode</div>
-                                <div class="tag">HelloWorld</div>
-                                <div class="tag">coding-is-fun</div>
-                                <div class="tag">LanguageWars</div>
-                                <div class="tag">PythonCultist</div>
-                            </div>
+                            <div class="tags-grid" id="tags-grid"></div>
                         </div>
                     </div>
 
                     <!-- right column: quick actions -->
                     <aside class="quick-actions">
                         <h3>Quick Actions</h3>
-                        <button class="qa-btn">
-                            <img src="icons/sparkle.png" class="qa-icon" alt="Summarize" />
+                        <button class="qa-btn" id="qa-summarize">
+                            <!-- sparkle icon -->
+                            <svg class="qa-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8Z"/></svg>
                             <span>Summarize Text</span>
                         </button>
-                        <button class="qa-btn">
-                            <img src="icons/link.png" class="qa-icon" alt="Add URL" />
+                        <button class="qa-btn" id="qa-add-url">
+                            <!-- link icon -->
+                            <svg class="qa-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 1 0-7l1-1a5 5 0 0 1 7 7l-1 1"/><path d="M14 11a5 5 0 0 1 0 7l-1 1a5 5 0 0 1-7-7l1-1"/></svg>
                             <span>Add URL</span>
                         </button>
-                        <button class="qa-btn">
-                            <img src="icons/upload.png" class="qa-icon" alt="Upload" />
-                            <span>Upload File</span>
+                        <button class="qa-btn" id="qa-new-note">
+                            <!-- document icon -->
+                            <svg class="qa-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span>New Note</span>
                         </button>
                     </aside>
                 </div>
@@ -552,27 +528,10 @@
                     <button class="toolbar-btn">Tags</button>
                     <button class="toolbar-btn">Newest First</button>
                     <button class="toolbar-btn">📋</button>
-                    <button class="toolbar-btn">📊</button>
-                    <button class="toolbar-btn add-source-btn">+ Add Source</button>
+                    <button class="toolbar-btn add-source-btn">＋ Add Source</button>
                 </div>
 
-                <div class="library-grid">
-                    <!-- card sample -->
-                    <div class="library-card">
-                        <div class="library-date">Jun 7, 2025 at 12:43 PM</div>
-                        <div class="library-title">Hello World</div>
-                        <div class="library-summary">
-                            This innocent 'Hello World' program was my gateway drug into a life
-                            of caffeine addiction, impostor syndrome, and explaining to my...
-                        </div>
-                        <div class="library-tags">
-                            <div class="library-tag">FirstCode</div>
-                            <div class="library-tag">HelloWorld</div>
-                            <div class="library-tag">coding-is-fun</div>
-                        </div>
-                    </div>
-                    <!-- other cards ... -->
-                </div>
+                <div class="library-grid" id="library-grid"></div>
             </div>
 
             <!-- ─── Notebooks Page ─────────────────── -->
@@ -597,7 +556,7 @@
                         Create your first notebook to organize your sources
                     </div>
                     <button
-                        class="add-source-btn"
+                        class="add-source-btn toolbar-btn"
                         style="max-width: 180px; margin: 1.5rem auto; font-size: 0.8rem;"
                     >
                         + Create Notebook
@@ -609,19 +568,10 @@
             <div id="summarize-page" class="main-content hidden">
                 <div class="sidebar">
                     <h3 style="margin-bottom: 0.9rem; font-size: 0.9rem;">Sources</h3>
-                    <button class="add-source-btn" style="margin-bottom: 1rem;">
+                    <button class="add-source-btn toolbar-btn" style="margin-bottom: 1rem; width:100%;">
                         + Add Source
                     </button>
-                    <div class="source-list">
-                        <div class="source-list-item">
-                            <div class="source-list-icon">📄</div>
-                            <div class="source-list-content">
-                                <div class="source-list-title">Hello World</div>
-                                <div class="source-list-date">text • 6/7/2025</div>
-                            </div>
-                        </div>
-                        <!-- more items -->
-                    </div>
+                    <div class="source-list" id="sidebar-source-list"></div>
                 </div>
                 <div class="content-area">
                     <div class="chat-container">
@@ -631,10 +581,9 @@
                             >
                                 💬
                             </div>
-                            <div class="welcome-title">Welcome to AI Chat</div>
+                            <div class="welcome-title">Welcome</div>
                             <div class="welcome-subtitle">
-                                I'm here to help you explore and understand your sources. What
-                                would you like to know?
+                                I promise this is not a wrapper
                             </div>
                         </div>
                         <div class="chat-input-container">
@@ -652,15 +601,38 @@
 
     <!-- ─── JavaScript ───────────────────────────── -->
     <script>
-        class MetadachiApp {
+        class krnNote {
             constructor() {
+                /** @type {Array<{id:number,title:string,summary:string,tags:string[],type:string,date:Date}>} */
+                this.sources = [
+                    {
+                        id: 1,
+                        title: "Hello World",
+                        summary:
+                            "This innocent 'Hello World' program was my gateway drug into a life of caffeine addiction, impostor syndrome, and explaining to my...",
+                        tags: ["FirstCode", "HelloWorld", "coding-is-fun"],
+                        type: "text",
+                        date: new Date("2025-06-07T12:43:00")
+                    }
+                ];
                 this.currentPage = "dashboard";
                 this.init();
             }
 
             init() {
+                this.cacheDom();
                 this.bindEvents();
+                this.renderAll();
                 this.showPage("dashboard");
+            }
+
+            cacheDom() {
+                this.statsGrid = document.getElementById("stats-grid");
+                this.recentSourcesEl = document.getElementById("recent-sources");
+                this.tagsGrid = document.getElementById("tags-grid");
+                this.libraryGrid = document.getElementById("library-grid");
+                this.sidebarSourceList = document.getElementById("sidebar-source-list");
+                this.searchInput = document.querySelector(".search-input");
             }
 
             bindEvents() {
@@ -673,14 +645,13 @@
                 });
 
                 // search
-                const searchInput = document.querySelector(".search-input");
-                if (searchInput) {
-                    searchInput.addEventListener("input", (e) => {
+                if (this.searchInput) {
+                    this.searchInput.addEventListener("input", (e) => {
                         this.filterLibrary(e.target.value);
                     });
                 }
 
-                // toolbar buttons
+                // toolbar buttons active toggle (except add-source)
                 document.querySelectorAll(".toolbar-btn").forEach((btn) => {
                     btn.addEventListener("click", (e) => {
                         if (!btn.classList.contains("add-source-btn")) {
@@ -692,30 +663,17 @@
                     });
                 });
 
-                // add‑source
+                // add‑source buttons
                 document.querySelectorAll(".add-source-btn").forEach((btn) => {
                     btn.addEventListener("click", () => {
-                        this.showAddSourceModal();
+                        this.showAddSourcePrompt();
                     });
                 });
 
-                // interactive items
-                document
-                    .querySelectorAll(
-                        ".source-item, .library-card, .source-list-item"
-                    )
-                    .forEach((item) => {
-                        item.addEventListener("click", () => {
-                            this.showSourceDetails(item);
-                        });
-                    });
-
-                // tags
-                document.querySelectorAll(".tag").forEach((tag) => {
-                    tag.addEventListener("click", (e) => {
-                        this.filterByTag(e.target.textContent);
-                    });
-                });
+                // quick actions
+                document.getElementById("qa-summarize").addEventListener("click", () => alert("Summarize coming soon ✨"));
+                document.getElementById("qa-add-url").addEventListener("click", () => this.showAddSourcePrompt("url"));
+                document.getElementById("qa-new-note").addEventListener("click", () => this.showAddSourcePrompt("text"));
 
                 // chat input
                 const chatInput = document.querySelector(".chat-input");
@@ -729,90 +687,218 @@
                 }
             }
 
+            // UI RENDERING 🔽
+            renderAll() {
+                this.renderStats();
+                this.renderRecentSources();
+                this.renderTags();
+                this.renderLibrary();
+                this.renderSidebarSources();
+            }
+
+            renderStats() {
+                const total = this.sources.length;
+                const textCount = this.sources.filter((s) => s.type === "text").length;
+                const urlCount = this.sources.filter((s) => s.type === "url").length;
+                const fileCount = this.sources.filter((s) => s.type === "file").length;
+                this.statsGrid.innerHTML = `
+                    ${this.statCard("Total Sources", total, "Across all types")}
+                    ${this.statCard("Text Sources", textCount, "Direct text inputs")}
+                    ${this.statCard("URL Sources", urlCount, "Web pages")}
+                    ${this.statCard("File Sources", fileCount, "Uploaded files")}
+                `;
+            }
+            statCard(title, value, subtitle) {
+                return `
+                    <div class="stat-card">
+                        <div class="stat-title">${title}</div>
+                        <div class="stat-value">${value}</div>
+                        <div class="stat-subtitle">${subtitle}</div>
+                    </div>`;
+            }
+
+            renderRecentSources() {
+                // sort desc by date and take top 5
+                const items = [...this.sources]
+                    .sort((a, b) => b.date - a.date)
+                    .slice(0, 5)
+                    .map((s) => this.recentSourceItem(s))
+                    .join("");
+                this.recentSourcesEl.innerHTML = items || `<div style="font-size:0.8rem;color:#666;">No sources yet</div>`;
+            }
+            recentSourceItem(source) {
+                return `
+                    <div class="source-item" data-id="${source.id}">
+                        <svg class="source-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                        <div style="flex: 1;">
+                            <div class="source-title">${this.truncate(source.title, 40)}</div>
+                            <div class="source-date">${this.formatDate(source.date, false)}</div>
+                        </div>
+                        <div class="source-status">Summarized</div>
+                    </div>`;
+            }
+
+            renderTags() {
+                const tagCounts = {};
+                this.sources.forEach((s) => {
+                    s.tags.forEach((t) => (tagCounts[t] = (tagCounts[t] || 0) + 1));
+                });
+                const tags = Object.keys(tagCounts).sort((a, b) => tagCounts[b] - tagCounts[a]);
+                this.tagsGrid.innerHTML = tags
+                    .map((tag) => `<div class="tag" data-tag="${tag}">${tag}</div>`) // no count display for now
+                    .join("") || `<div style="font-size:0.8rem;color:#666;">No tags yet</div>`;
+
+                // rebind tag click
+                this.tagsGrid.querySelectorAll(".tag").forEach((tagEl) => {
+                    tagEl.addEventListener("click", (e) => {
+                        this.filterByTag(tagEl.textContent);
+                    });
+                });
+            }
+
+            renderLibrary() {
+                if (!this.libraryGrid) return;
+                this.libraryGrid.innerHTML = this.sources
+                    .map((src) => this.libraryCard(src))
+                    .join("");
+
+                // attach click handler
+                this.libraryGrid.querySelectorAll(".library-card").forEach((card) => {
+                    card.addEventListener("click", () => {
+                        const id = Number(card.dataset.id);
+                        const source = this.sources.find((s) => s.id === id);
+                        this.showSourceDetails(source);
+                    });
+                });
+            }
+            libraryCard(source) {
+                return `
+                    <div class="library-card" data-id="${source.id}">
+                        <div class="library-date">${this.formatDate(source.date)}</div>
+                        <div class="library-title">${this.escapeHtml(source.title)}</div>
+                        <div class="library-summary">${this.escapeHtml(source.summary)}</div>
+                        <div class="library-tags">
+                            ${source.tags.map((t) => `<div class="library-tag">${t}</div>`).join("")}
+                        </div>
+                    </div>`;
+            }
+
+            renderSidebarSources() {
+                if (!this.sidebarSourceList) return;
+                this.sidebarSourceList.innerHTML = this.sources
+                    .map((s) => this.sidebarItem(s))
+                    .join("");
+            }
+            sidebarItem(source) {
+                return `
+                    <div class="source-list-item" data-id="${source.id}" style="display:flex;align-items:center;padding:0.4rem 0;cursor:pointer;">
+                        <div style="margin-right:0.6rem;">📄</div>
+                        <div class="source-list-content" style="flex:1;">
+                            <div class="source-list-title">${this.escapeHtml(source.title)}</div>
+                            <div class="source-list-date" style="color:#666;font-size:0.7rem;">${source.type} • ${this.formatDate(source.date,false)}</div>
+                        </div>
+                    </div>`;
+            }
+
+            // INTERACTIONS 🔽
             showPage(pageName) {
                 // nav state
-                document.querySelectorAll(".nav-item").forEach((i) =>
-                    i.classList.remove("active")
-                );
-                document
-                    .querySelector(`[data-page="${pageName}"]`)
-                    .classList.add("active");
+                document.querySelectorAll(".nav-item").forEach((i) => i.classList.remove("active"));
+                document.querySelector(`[data-page="${pageName}"]`).classList.add("active");
 
-                // hide all
-                document.querySelectorAll("[id$='-page']").forEach((p) =>
-                    p.classList.add("hidden")
-                );
+                // hide all content areas
+                document.querySelectorAll("[id$='-page']").forEach((p) => p.classList.add("hidden"));
 
                 // reveal target
                 const target = document.getElementById(`${pageName}-page`);
-                if (target) {
-                    target.classList.remove("hidden");
-                    this.currentPage = pageName;
-                }
+                if (target) target.classList.remove("hidden");
+                this.currentPage = pageName;
             }
 
             filterLibrary(term) {
-                document.querySelectorAll(".library-card").forEach((card) => {
-                    const title = card
-                        .querySelector(".library-title")
-                        .textContent.toLowerCase();
-                    const summary = card
-                        .querySelector(".library-summary")
-                        .textContent.toLowerCase();
-                    const match =
-                        title.includes(term.toLowerCase()) ||
-                        summary.includes(term.toLowerCase());
+                const lower = term.toLowerCase();
+                this.libraryGrid.querySelectorAll(".library-card").forEach((card) => {
+                    const title = card.querySelector(".library-title").textContent.toLowerCase();
+                    const summary = card.querySelector(".library-summary").textContent.toLowerCase();
+                    const match = title.includes(lower) || summary.includes(lower);
                     card.style.display = match ? "block" : "none";
                 });
             }
 
             filterByTag(tagText) {
                 // highlight clicked tag
-                document.querySelectorAll(".tag").forEach((t) =>
-                    t.classList.remove("active")
-                );
-                const clicked = [...document.querySelectorAll(".tag")].find(
-                    (t) => t.textContent.trim() === tagText.trim()
-                );
+                this.tagsGrid.querySelectorAll(".tag").forEach((t) => t.classList.remove("active"));
+                const clicked = [...this.tagsGrid.querySelectorAll(".tag")].find((t) => t.textContent.trim() === tagText.trim());
                 if (clicked) clicked.classList.add("active");
 
                 // library cards
-                document.querySelectorAll(".library-card").forEach((card) => {
+                this.libraryGrid.querySelectorAll(".library-card").forEach((card) => {
                     const tags = card.querySelectorAll(".library-tag");
-                    const hasTag = [...tags].some(
-                        (t) => t.textContent.trim() === tagText.trim()
-                    );
+                    const hasTag = [...tags].some((t) => t.textContent.trim() === tagText.trim());
                     card.style.display = hasTag ? "block" : "none";
                 });
 
                 // sidebar source list
-                document
-                    .querySelectorAll(".source-list-item")
-                    .forEach((item) => {
-                        const title = item
-                            .querySelector(".source-list-title")
-                            .textContent.toLowerCase();
-                        const hasTag = title.includes(tagText.toLowerCase());
-                        item.style.display = hasTag ? "flex" : "none";
-                    });
+                this.sidebarSourceList.querySelectorAll(".source-list-item").forEach((item) => {
+                    const id = Number(item.dataset.id);
+                    const src = this.sources.find((s) => s.id === id);
+                    const hasTag = src.tags.includes(tagText.trim());
+                    item.style.display = hasTag ? "flex" : "none";
+                });
             }
 
-            // placeholder stubs for future logic
-            showAddSourceModal() {
-                alert("Add Source modal coming soon ✨");
+            showAddSourcePrompt(prefillType = "text") {
+                const title = prompt("Enter a title for your source:");
+                if (!title) return;
+                const summary = prompt("Enter a short summary:") || "(no summary)";
+                const tagsInput = prompt("Enter tags (comma‑separated):") || "untagged";
+                const tags = tagsInput.split(/[, ]+/).filter(Boolean);
+                const newSource = {
+                    id: Date.now(),
+                    title,
+                    summary,
+                    tags,
+                    type: prefillType,
+                    date: new Date()
+                };
+                this.sources.push(newSource);
+                this.renderAll();
+                alert("Source added!");
             }
-            showSourceDetails(item) {
-                console.log("Would open details for", item);
+
+            showSourceDetails(source) {
+                alert(`Title: ${source.title}\nTags: ${source.tags.join(", ")}`);
             }
+
             sendMessage(msg) {
                 if (msg.trim() === "") return;
                 console.log("SEND MESSAGE", msg);
+                alert("Pretend we sent: " + msg);
+            }
+
+            // UTIL 🔽
+            formatDate(date, includeTime = true) {
+                const options = includeTime
+                    ? { year: "numeric", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }
+                    : { year: "numeric", month: "short", day: "numeric" };
+                return new Intl.DateTimeFormat(undefined, options).format(date);
+            }
+            truncate(str, n) {
+                return str.length > n ? str.slice(0, n - 1) + "…" : str;
+            }
+            escapeHtml(str) {
+                return str.replace(/[&<>'"]/g, (c) => ({
+                    "&": "&amp;",
+                    "<": "&lt;",
+                    ">": "&gt;",
+                    "'": "&#39;",
+                    '"': "&quot;"
+                }[c]));
             }
         }
 
         // boot
-        new MetadachiApp();
+        new krnNote();
     </script>
 </body>
 </html>
-
