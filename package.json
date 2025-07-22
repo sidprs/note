@@ -1,0 +1,20 @@
+{
+  "name": "minimalist-notes-app",
+  "version": "1.0.0",
+  "description": "A minimalist note-taking app with TypeScript",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.9",
+    "typescript": "^5.8.3",
+    "vite": "^5.4.19"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
